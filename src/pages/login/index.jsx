@@ -9,22 +9,11 @@ import { useForm } from "react-hook-form";
 import { api } from "../../services/axiosApi";
 import { NotifyError, NotifySucess } from "../../components/Toastify";
 import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
+
 import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "../../components/Form/Schemas/loginSchema";
 
 export const Login = () => {
-  const loginSchema = yup.object().shape({
-    email: yup
-      .string()
-      .required("Email é obrigatório")
-      .min(8, "Email deve ter no minimo 8 caracteres")
-      .email("É necessario um email válido"),
-    password: yup
-      .string()
-      .required("È necessario um password")
-      .min(6, "Senha deve ter no minimo 6 caracteres"),
-  });
-
   const {
     register,
     handleSubmit,
@@ -42,11 +31,9 @@ export const Login = () => {
         const response = await api.post("sessions", data);
         if (response.data.token) {
           NotifySucess("Login Realizado com sucesso");
-          /*Atenção, aqui eu passei o objeto de retorno completo para caso eu precise de outras informações do usuario, eu não esta precisando salvar de um por um no localStorage.*/
-          localStorage.userInfo = JSON.stringify(response.data);
-          setTimeout(() => {
-            navigate("dashboard");
-          }, 3000);
+          localStorage.token = JSON.stringify(response.data.token);
+          localStorage.userId = JSON.stringify(response.data.user.id);
+          navigate("dashboard");
         }
       } catch (error) {
         NotifyError(`${error.response.data.message}`);

@@ -9,8 +9,7 @@ export const Dashboard = () => {
   const [userInfo, setUserInfo] = useState();
 
   useEffect(() => {
-    const getIdLocalStorage = JSON.parse(localStorage.userInfo);
-    const idUser = getIdLocalStorage.user.id;
+    const idUser = JSON.parse(localStorage.userId);
     const getInfoUser = async () => {
       try {
         const response = await api.get(`users/${idUser}`);
@@ -25,14 +24,15 @@ export const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isTokenExist = localStorage.userInfo;
+    const isTokenExist = localStorage.token;
     if (!isTokenExist) {
       navigate("/");
     }
   }, []);
 
   const logout = () => {
-    localStorage.removeItem("userInfo");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
     navigate("/");
   };
 
