@@ -1,34 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
-import { api } from "../../services/axiosApi";
 import { DivHeader, DivMain, DivSubHeader } from "./style";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthLogin } from "../../contexts/AuthLogin";
+import { CardTech } from "../../components/CardTech";
+import { Modal } from "../../components/Modal";
+import { TechProvider } from "../../contexts/TechContext";
 
 export const Dashboard = () => {
-  const [userInfo, setUserInfo] = useState();
+  const { userInfo, loading } = useContext(AuthLogin);
 
-  useEffect(() => {
-    const idUser = JSON.parse(localStorage.userId);
-    const getInfoUser = async () => {
-      try {
-        const response = await api.get(`users/${idUser}`);
-        setUserInfo(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getInfoUser();
-  }, []);
+  if (loading) {
+    return <h1 className="loading"></h1>;
+  }
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const isTokenExist = localStorage.token;
-    if (!isTokenExist) {
-      navigate("/");
-    }
-  }, []);
 
   const logout = () => {
     localStorage.removeItem("userId");
@@ -36,7 +24,7 @@ export const Dashboard = () => {
     navigate("/");
   };
 
-  return (
+  return userInfo ? (
     <>
       <DivHeader>
         <div className="containerMobile">
@@ -53,12 +41,15 @@ export const Dashboard = () => {
       </DivSubHeader>
       <DivMain>
         <div className="containerMobile">
-          <h3>Que pena! Estamos em desenvolvimento :{"("}</h3>
-          <p>
-            Nossa aplicação está em desenvolvimento, em breve teremos novidades!
-          </p>
+          <TechProvider>
+            <Modal>
+              <CardTech />
+            </Modal>
+          </TechProvider>
         </div>
       </DivMain>
     </>
+  ) : (
+    <Navigate to="/" />
   );
 };

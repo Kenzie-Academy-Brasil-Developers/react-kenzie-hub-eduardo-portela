@@ -6,14 +6,14 @@ import { DivLogin } from "./style";
 import { Input } from "../../components/Input";
 import { Link } from "./style";
 import { useForm } from "react-hook-form";
-import { api } from "../../services/axiosApi";
-import { NotifyError, NotifySucess } from "../../components/Toastify";
-import { useNavigate } from "react-router-dom";
-
+import { useContext } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../components/Form/Schemas/loginSchema";
+import { AuthLogin } from "../../contexts/AuthLogin";
 
 export const Login = () => {
+  const { loginRequest } = useContext(AuthLogin);
+
   const {
     register,
     handleSubmit,
@@ -23,32 +23,12 @@ export const Login = () => {
     mode: "onBlur",
     resolver: yupResolver(loginSchema),
   });
-  const navigate = useNavigate();
-
-  const onSubmitFuncion = async (data) => {
-    const loginRequest = async () => {
-      try {
-        const response = await api.post("sessions", data);
-        if (response.data.token) {
-          NotifySucess("Login Realizado com sucesso");
-          localStorage.token = JSON.stringify(response.data.token);
-          localStorage.userId = JSON.stringify(response.data.user.id);
-          navigate("dashboard");
-        }
-      } catch (error) {
-        NotifyError(`${error.response.data.message}`);
-        console.log(error);
-      }
-    };
-    await loginRequest();
-    reset();
-  };
 
   return (
     <DivLogin className="containerMobile">
       <Header />
 
-      <Form callback={handleSubmit(onSubmitFuncion)}>
+      <Form callback={handleSubmit(loginRequest)}>
         <h3>Login</h3>
         <Input
           labelName={"email"}

@@ -41,11 +41,8 @@ export const DivSubHeader = styled.div`
 
 export const DivMain = styled.main`
   div {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    height: 131px;
-    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   h3 {
@@ -61,7 +58,8 @@ export const DivMain = styled.main`
     & div {
       max-width: 800px;
       padding: 0;
-      height: 120px;
+      margin-top: 30px;
+      margin-bottom: 20px;
     }
   }
 `;

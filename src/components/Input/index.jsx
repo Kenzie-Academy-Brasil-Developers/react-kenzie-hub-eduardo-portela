@@ -7,11 +7,13 @@ export const Input = ({
   placeholder,
   type,
   register,
+  disable,
 }) => {
   return (
     <>
       <label htmlFor={labelName}>{labelText}</label>
       <input
+        disabled={disable}
         required
         placeholder={placeholder}
         name={labelName}

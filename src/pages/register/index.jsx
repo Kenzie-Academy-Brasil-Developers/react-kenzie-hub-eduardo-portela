@@ -6,16 +6,13 @@ import { Input } from "../../components/Input";
 import { ModuleSelect } from "../../components/Select";
 import { DivFormTitle, Link } from "./style";
 import { useForm } from "react-hook-form";
-import { api } from "../../services/axiosApi";
-import { NotifyError, NotifySucess } from "../../components/Toastify";
-import { useNavigate } from "react-router-dom";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../components/Form/Schemas/registerSchema";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 export const Register = () => {
-  const navigate = useNavigate();
-
+  const { onSubmitFunctionRegister } = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -26,26 +23,12 @@ export const Register = () => {
     resolver: yupResolver(registerSchema),
   });
 
-  const onSubmitFunction = async (data) => {
-    try {
-      const response = await api.post("users", data);
-      if (response.data.id) {
-        NotifySucess("Cadastro realizado com sucesso!");
-        navigate("/");
-      }
-    } catch (error) {
-      NotifyError(`${error.response.data.message}`);
-      console.log(error);
-    }
-    reset();
-  };
-
   return (
     <div className="containerMobile">
       <Header>
         <Link to="/">Voltar</Link>
       </Header>
-      <Form callback={handleSubmit(onSubmitFunction)}>
+      <Form callback={handleSubmit(onSubmitFunctionRegister)}>
         <DivFormTitle>
           <h3>Crie sua conta</h3>
           <span>Rápido e grátis, vamos nessa</span>
