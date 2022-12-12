@@ -25,6 +25,7 @@ export const CardTech = () => {
     useContext(ModalContext);
   const { onSubmitAddTech, deleteTech, editTechSubmit, setId } =
     useContext(TechContext);
+  const [inputValue, setInputValue] = useState("");
 
   const {
     register,
@@ -52,13 +53,17 @@ export const CardTech = () => {
         reset={reset}
       />
 
-      <ModalEditTech />
+      <ModalEditTech inputValue={inputValue} />
       <HeaderList>
         <h3>Tecnologias</h3>
         <Button text={"+"} type={"button"} callback={openModal} />
       </HeaderList>
       {newTech && (
-        <ListCardTech>
+        <ListCardTech
+          onClick={(event) =>
+            console.log(setInputValue(event.target.innerText))
+          }
+        >
           {newTech.map(({ id, title, status }) => (
             <TechCard key={id} onClick={() => setId(id)}>
               <p onClick={openEditModal}>{title}</p>

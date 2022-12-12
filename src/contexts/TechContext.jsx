@@ -67,7 +67,6 @@ export const TechProvider = ({ children }) => {
   };
 
   const editTechSubmit = async (data) => {
-    console.log(data);
     try {
       setLoading(true);
       const response = await api.put(`/users/techs/${getId}`, data, {

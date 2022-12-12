@@ -10,10 +10,9 @@ import { EditTechSchema } from "../Form/Schemas/EditTechSchema";
 import { Input } from "../Input";
 import { ModalContext } from "../Modal";
 
-export const ModalEditTech = () => {
+export const ModalEditTech = ({ inputValue }) => {
   const { closeEditModal, modalEditIsOpen } = useContext(ModalContext);
   const { editTechSubmit } = useContext(TechContext);
-
   const {
     register,
     handleSubmit,
@@ -43,7 +42,7 @@ export const ModalEditTech = () => {
           type={"text"}
           labelName={"name"}
           labelText={"Nome do Projeto"}
-          placeholder={"Tech"}
+          placeholder={inputValue}
         />
         <label htmlFor="nivel">Status</label>
         <select name="nivel" id="selectNivel" {...register("status")}>
@@ -54,11 +53,6 @@ export const ModalEditTech = () => {
         </select>
         {errors.status?.message && <p>{errors.status.message}</p>}
         <Button type={"submit"} text={"Salvar Alterações"} />
-        {/* <Button
-          type={"button"}
-          callback={() => deleteTech(getId)}
-          text={"excluir"}
-        /> */}
       </Form>
     </ReactModal>
   );

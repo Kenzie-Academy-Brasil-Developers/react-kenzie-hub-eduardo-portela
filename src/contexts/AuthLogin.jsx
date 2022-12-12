@@ -37,7 +37,6 @@ export const LoginProvider = ({ children }) => {
     verifyUser();
   }, []);
 
-  //   const onSubmitFuncion = async (data) => {
   const loginRequest = async (data) => {
     try {
       const response = await api.post("sessions", data);
@@ -53,9 +52,6 @@ export const LoginProvider = ({ children }) => {
       console.log(error);
     }
   };
-  // await loginRequest();
-  //await reset();
-  //   };
 
   return (
     <AuthLogin.Provider value={{ userInfo, loginRequest, loading }}>
