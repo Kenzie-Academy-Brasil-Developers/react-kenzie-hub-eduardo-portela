@@ -21,18 +21,17 @@ export const LoginProvider = ({ children }) => {
       }
 
       try {
-        setLoading(true);
         const { data } = await api.get("/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(data);
         setUserInfo(data);
       } catch (error) {
         console.log(error);
         localStorage.removeItem("userId");
         localStorage.removeItem("token");
+        navigate("/");
       } finally {
         setLoading(false);
       }
