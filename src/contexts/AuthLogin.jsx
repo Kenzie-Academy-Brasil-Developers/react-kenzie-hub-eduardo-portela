@@ -16,8 +16,10 @@ export const LoginProvider = ({ children }) => {
 
       if (!token) {
         setLoading(false);
-        return;
+
+        return navigate("/");
       }
+
       try {
         setLoading(true);
         const { data } = await api.get("/profile", {
@@ -25,6 +27,7 @@ export const LoginProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(data);
         setUserInfo(data);
       } catch (error) {
         console.log(error);
@@ -50,6 +53,7 @@ export const LoginProvider = ({ children }) => {
     } catch (error) {
       NotifyError(`${error.response.data.message}`);
       console.log(error);
+      navigate("/");
     }
   };
 

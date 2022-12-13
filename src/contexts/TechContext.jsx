@@ -3,18 +3,20 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { useForm } from "react-hook-form";
+import { ModalContext } from "../components/Modal";
 import { NotifyError, NotifySucess } from "../components/Toastify";
 import { api } from "../services/axiosApi";
 import { AuthLogin } from "./AuthLogin";
+import { UserContext } from "./UserContext";
 
 export const TechContext = createContext({});
 
 export const TechProvider = ({ children }) => {
   const { userInfo, setUserInfo } = useContext(AuthLogin);
   const [newTech, setNewTech] = useState(userInfo.techs);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [getId, setId] = useState("");
-  const [getTech, setTech] = useState({});
+  const { closeModal, closeEditModal } = useContext(ModalContext);
 
   const token = JSON.parse(localStorage.getItem("token"));
   const onSubmitAddTech = async (data) => {
@@ -23,7 +25,6 @@ export const TechProvider = ({ children }) => {
       return;
     }
     try {
-      setLoading(true);
       const response = await api.post("/users/techs", data, {
         headers: {
           authorization: `Bearer: ${token}`,
@@ -35,6 +36,7 @@ export const TechProvider = ({ children }) => {
       NotifyError(error.response.data.message);
     } finally {
       setLoading(false);
+      closeModal();
     }
   };
   const deleteTech = async (techId) => {
@@ -44,7 +46,6 @@ export const TechProvider = ({ children }) => {
     }
 
     try {
-      setLoading(true);
       const response = await api.delete(`/users/techs/${techId}`, {
         headers: {
           authorization: `Bearer ${token}`,
@@ -68,13 +69,11 @@ export const TechProvider = ({ children }) => {
 
   const editTechSubmit = async (data) => {
     try {
-      setLoading(true);
       const response = await api.put(`/users/techs/${getId}`, data, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
-      console.log(response);
       if (response.data) {
         NotifySucess(`Nível de ${response.data.title} atualizado com sucesso`);
 
@@ -87,6 +86,7 @@ export const TechProvider = ({ children }) => {
       NotifyError(error.response.data.message);
     } finally {
       setLoading(false);
+      closeEditModal();
     }
   };
   return (

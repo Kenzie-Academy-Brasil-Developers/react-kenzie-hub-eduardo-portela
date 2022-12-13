@@ -60,9 +60,7 @@ export const CardTech = () => {
       </HeaderList>
       {newTech && (
         <ListCardTech
-          onClick={(event) =>
-            console.log(setInputValue(event.target.innerText))
-          }
+          onClick={(event) => setInputValue(event.target.innerText)}
         >
           {newTech.map(({ id, title, status }) => (
             <TechCard key={id} onClick={() => setId(id)}>

@@ -16,6 +16,11 @@ export const Dashboard = () => {
     return <h1 className="loading"></h1>;
   }
 
+  if (!localStorage.token) {
+    console.log(localStorage.token);
+    navigate("/");
+  }
+
   const navigate = useNavigate();
 
   const logout = () => {
@@ -41,11 +46,11 @@ export const Dashboard = () => {
       </DivSubHeader>
       <DivMain>
         <div className="containerMobile">
-          <TechProvider>
-            <Modal>
+          <Modal>
+            <TechProvider>
               <CardTech />
-            </Modal>
-          </TechProvider>
+            </TechProvider>
+          </Modal>
         </div>
       </DivMain>
     </>

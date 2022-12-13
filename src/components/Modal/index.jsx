@@ -31,6 +31,7 @@ export const Modal = ({ children }) => {
         modalEditIsOpen,
         openEditModal,
         closeEditModal,
+        setIsOpen,
       }}
     >
       {children}

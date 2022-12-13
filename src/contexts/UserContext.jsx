@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { NotifyError, NotifySucess } from "../components/Toastify";
-import { AiOutlineLoading } from "react-icons/ai";
 
 import { api } from "../services/axiosApi";
 
@@ -20,9 +19,6 @@ export const UserProvider = ({ children }) => {
       console.log(response);
       if (response.data.id) {
         NotifySucess("Cadastro realizado com sucesso!");
-        if (loading) {
-          <AiOutlineLoading3Quarters />;
-        }
         navigate("/");
       }
     } catch (error) {
